@@ -30,8 +30,6 @@ PHP_APACHE="YES" PHP_VERSION="${PHP_VERSION}" PHP_MODULE="mysql,cli,redis" PHP_F
 msg_ok "PHP ${PHP_VERSION} and required extensions installed"
 setup_composer
 msg_ok "Setup composer"
-$STD composer install
-
 $STD a2enmod rewrite
 $STD a2enmod headers
 msg_ok "Apache2 with rewrite and headers modules configured"
