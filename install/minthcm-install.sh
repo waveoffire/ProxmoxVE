@@ -89,7 +89,7 @@ $STD systemctl restart apache2
 msg_ok "Apache2 restarted"
 
 read -r -p "${TAB3}Do you want MariaDB and Elasticsearch to be installed automatically in this LXC container? <Y/n> " prompt
-if [[ ${prompt,,} =~ ^(y|yes)$ ]]; then
+if [[ -z "$prompt" || ${prompt,,} =~ ^(y|yes)$ ]]; then
 msg_info "Setting up Elasticsearch"
 setup_deb822_repo \
   "elasticsearch" \
@@ -107,6 +107,7 @@ msg_ok "Setup Elasticsearch"
 
 
 setup_mariadb
+MARIADB_DB_NAME="minthcm" MARIADB_DB_USER="minthcm" MARIADB_DB_PASS="minthcm" MARIADB_DB_SQL_MODE="" setup_mariadb_db
 
 mkdir /var/www/script
 curl -fsSL \
@@ -116,7 +117,15 @@ curl -fsSL \
 chown -R www-data:www-data /var/www/script
 msg_ok "generate_config.php script downloaded"
 export DB_HOST=localhost
+export DB_NAME=minthcm
+export DB_PORT=3306
+export DB_USER=minthcm
+export DB_PASS=minthcm
+export MINT_URL=localhost
+export MINT_USER=admin
+export MINT_PASS=minthcm
 export ELASTICSEARCH_HOST=localhost
+
   php /var/www/script/generate_config.php
 
 if [[ ! -f /var/www/MintHCM/configMint4 ]]; then
