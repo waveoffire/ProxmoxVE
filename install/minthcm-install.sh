@@ -88,7 +88,7 @@ msg_info "Restarting Apache2 with new configuration"
 $STD systemctl restart apache2
 msg_ok "Apache2 restarted"
 
-read -r -p "${TAB3}Do you want MariaDB and Elasticsearch to be installed automatically in this LXC container? <y/N> " prompt
+read -r -p "${TAB3}Do you want MariaDB and Elasticsearch to be installed automatically in this LXC container? <Y/n> " prompt
 if [[ ${prompt,,} =~ ^(y|yes)$ ]]; then
 msg_info "Setting up Elasticsearch"
 setup_deb822_repo \
@@ -108,7 +108,7 @@ msg_ok "Setup Elasticsearch"
 
 setup_mariadb
 
-
+mkdir /var/www/script
 curl -fsSL \
   "https://raw.githubusercontent.com/minthcm/minthcm/master/docker/script/generate_config.php" \
   -o "/var/www/script/generate_config.php" \
