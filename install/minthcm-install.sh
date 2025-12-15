@@ -24,10 +24,10 @@ $STD apt-get install -y git curl cron
 msg_ok "Base packages installed"
 
 
-msg_info "Setting up PHP ${PHP_VERSION} via tools.func"
-PHP_APACHE="YES" PHP_VERSION="8.2" PHP_MODULE="mysql,cli,redis," PHP_FPM="YES" setup_php
+msg_info "Setting up PHP ${PHP_VERSION}"
+PHP_APACHE="YES" PHP_VERSION="${PHP_VERSION}" PHP_MODULE="mysql,cli,redis" PHP_FPM="YES" setup_php
 
-msg_ok "PHP ${PHP_VERSION} and required extensions installed via setup_php"
+msg_ok "PHP ${PHP_VERSION} and required extensions installed"
 setup_composer
 msg_ok "Setup composer"
 $STD composer install
