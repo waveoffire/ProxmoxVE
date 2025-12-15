@@ -20,33 +20,21 @@ PHP_VERSION="8.2"
 
 # Install base packages required for MintHCM and system management
 msg_info "Installing base packages"
-$STD apt-get install -y software-properties-common git curl cron sudo
+$STD apt-get install -y git curl cron
 msg_ok "Base packages installed"
 
-# Install and configure Apache2 web server with required modules (if not already installed)
-msg_info "Checking for Apache2 and configuring it"
-if ! dpkg -s apache2 >/dev/null 2>&1; then
-  $STD apt-get install -y apache2
-  msg_ok "Apache2 installed"
-else
-  msg_ok "Apache2 already installed"
-fi
+
+msg_info "Setting up PHP ${PHP_VERSION} via tools.func"
+PHP_APACHE="YES" PHP_MODULE="imap,mysql" PHP_VERSION="${PHP_VERSION}" setup_php
+msg_ok "PHP ${PHP_VERSION} and required extensions installed via setup_php"
+setup_composer
+msg_ok "Setup composer"
+$STD composer install
 
 $STD a2enmod rewrite
 $STD a2enmod headers
 msg_ok "Apache2 with rewrite and headers modules configured"
 
-# Use tools.func helper to install PHP and required extensions
-# setup_php will handle repository configuration and PHP installation
-msg_info "Setting up PHP ${PHP_VERSION} via tools.func"
-PHP_APACHE="YES"
-PHP_FPM="NO"
-# Default modules from setup_php already include many common extensions.
-# Here we explicitly add extra modules needed by MintHCM (imap, mysql).
-PHP_MODULE="imap,mysql"
-export PHP_VERSION PHP_APACHE PHP_FPM PHP_MODULE
-setup_php
-msg_ok "PHP ${PHP_VERSION} and required extensions installed via setup_php"
 
 # Download MintHCM-specific PHP configuration file
 msg_info "Downloading PHP configuration for MintHCM"
