@@ -75,18 +75,9 @@ else
 fi
 msg_ok "MintHCM repository available at ${MINT_DIR}"
 
-# Download generate_config.php helper script used by MintHCM
-msg_info "Downloading generate_config.php script"
-mkdir -p /var/www/script
-curl -fsSL \
-  "https://raw.githubusercontent.com/minthcm/minthcm/master/docker/script/generate_config.php" \
-  -o "/var/www/script/generate_config.php" \
-  || msg_error "Failed to download generate_config.php"
-chown -R www-data:www-data /var/www/script
-msg_ok "generate_config.php script downloaded"
-
 # Set ownership and permissions for MintHCM directory
 msg_info "Setting ownership and permissions for MintHCM directory"
+git config --global --add safe.directory /var/www/MintHCM
 chown -R www-data:www-data "${MINT_DIR}"
 find "${MINT_DIR}" -type d -exec chmod 755 {} \;
 find "${MINT_DIR}" -type f -exec chmod 644 {} \;
@@ -97,17 +88,58 @@ msg_info "Restarting Apache2 with new configuration"
 $STD systemctl restart apache2
 msg_ok "Apache2 restarted"
 
-# Optionally record simple version info using current Git commit (HEAD)
-if command -v git >/dev/null 2>&1 && [[ -d "${MINT_DIR}/.git" ]]; then
-  MINT_VERSION="$(git -C "${MINT_DIR}" rev-parse --short HEAD || echo 'unknown')"
-else
-  MINT_VERSION="unknown"
+read -r -p "${TAB3}Do you want MariaDB and Elasticsearch to be installed automatically in this LXC container? <y/N> " prompt
+if [[ ${prompt,,} =~ ^(y|yes)$ ]]; then
+msg_info "Setting up Elasticsearch"
+setup_deb822_repo \
+  "elasticsearch" \
+  "https://artifacts.elastic.co/GPG-KEY-elasticsearch" \
+  "https://artifacts.elastic.co/packages/7.x/apt" \
+  "stable" \
+  "main"
+$STD apt install -y elasticsearch
+echo "-Xms2g" >>/etc/elasticsearch/jvm.options
+echo "-Xmx2g" >>/etc/elasticsearch/jvm.options
+$STD /usr/share/elasticsearch/bin/elasticsearch-plugin install ingest-attachment -b
+systemctl enable -q elasticsearch
+systemctl restart -q elasticsearch
+msg_ok "Setup Elasticsearch"
+
+
+setup_mariadb
+
+
+curl -fsSL \
+  "https://raw.githubusercontent.com/minthcm/minthcm/master/docker/script/generate_config.php" \
+  -o "/var/www/script/generate_config.php" \
+  || msg_error "Failed to download generate_config.php"
+chown -R www-data:www-data /var/www/script
+msg_ok "generate_config.php script downloaded"
+export DB_HOST=localhost
+export ELASTICSEARCH_HOST=localhost
+  php /var/www/script/generate_config.php
+
+if [[ ! -f /var/www/MintHCM/configMint4 ]]; then
+    msg_error "Error: Failed to generate configMint4 - please check the configuration\n"
+    exit 1
+  fi
+msg_info "Starting MintHCM installation...\n"
+  su -s /bin/bash -c 'php /var/www/MintHCM/MintCLI install < /var/www/MintHCM/configMint4' www-data
+
+  if [[ $? -ne 0 ]]; then
+    msg_error "Error: MintHCM installation failed - please check logs\n"
+  else
+    msg_ok "MintHCM installation completed!\n"
+    #add cron and start service
+    printf "*    *    *    *    *     cd /var/www/MintHCM/legacy; php -f cron.php > /dev/null 2>&1" > /var/spool/cron/crontabs/www-data
+    service cron start
+    rm /var/www/MintHCM/configMint4
+  fi
+
 fi
 
-# APPLICATION variable is provided by the community-scripts wrapper
-if [[ -n "${APPLICATION}" ]]; then
-  echo "${MINT_VERSION}" >"/opt/${APPLICATION}_version.txt"
-fi
+
+
 
 msg_ok "${APP_NAME} has been installed. Make sure to configure the database and other parameters according to the MintHCM documentation."
 
