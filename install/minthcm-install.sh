@@ -25,7 +25,7 @@ msg_ok "Base packages installed"
 
 
 msg_info "Setting up PHP ${PHP_VERSION} via tools.func"
-PHP_APACHE="YES" PHP_VERSION="8.3" PHP_MODULE="common,ctype,fileinfo,mysql,cli,tokenizer,dom,redis,session,openssl" PHP_FPM="YES" setup_php
+PHP_APACHE="YES" PHP_VERSION="8.2" PHP_MODULE="mysql,cli,redis," PHP_FPM="YES" setup_php
 
 msg_ok "PHP ${PHP_VERSION} and required extensions installed via setup_php"
 setup_composer
