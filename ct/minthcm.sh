@@ -10,7 +10,7 @@ var_tags="${var_tags:-hcm}"
 var_disk="${var_disk:-20}"
 var_cpu="${var_cpu:-2}"
 var_ram="${var_ram:-4096}"
-var_os="${var_os:-devian}"
+var_os="${var_os:-debian}"
 var_version="${var_version:-13}"
 var_unprivileged="${var_unprivileged:-1}"
 
