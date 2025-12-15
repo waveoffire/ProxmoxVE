@@ -34,7 +34,6 @@ $STD a2enmod rewrite
 $STD a2enmod headers
 msg_ok "Apache2 with rewrite and headers modules configured"
 
-setup_mysql
 # Download MintHCM-specific PHP configuration file
 msg_info "Downloading PHP configuration for MintHCM"
 PHP_MODS_DIR="/etc/php/${PHP_VERSION}/mods-available"
