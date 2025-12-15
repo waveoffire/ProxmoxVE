@@ -25,7 +25,8 @@ msg_ok "Base packages installed"
 
 
 msg_info "Setting up PHP ${PHP_VERSION} via tools.func"
-PHP_APACHE="YES" PHP_MODULE="imap,mysql" PHP_VERSION="${PHP_VERSION}" setup_php
+PHP_APACHE="YES" PHP_VERSION="8.3" PHP_MODULE="common,ctype,fileinfo,mysql,cli,tokenizer,dom,redis,session,openssl" PHP_FPM="YES" setup_php
+
 msg_ok "PHP ${PHP_VERSION} and required extensions installed via setup_php"
 setup_composer
 msg_ok "Setup composer"
@@ -35,7 +36,7 @@ $STD a2enmod rewrite
 $STD a2enmod headers
 msg_ok "Apache2 with rewrite and headers modules configured"
 
-
+setup_mysql
 # Download MintHCM-specific PHP configuration file
 msg_info "Downloading PHP configuration for MintHCM"
 PHP_MODS_DIR="/etc/php/${PHP_VERSION}/mods-available"
