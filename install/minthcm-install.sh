@@ -107,7 +107,14 @@ msg_ok "Setup Elasticsearch"
 
 
 setup_mariadb
-MARIADB_DB_USER="minthcm" MARIADB_DB_PASS="minthcm" MARIADB_DB_SQL_MODE="" setup_mariadb_db
+msg_info "Configuring Database"
+
+DB_USER=minthcm
+DB_PASS=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c13)
+$STD mariadb -u root -e "CREATE USER '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASS';"
+$STD mariadb -u root -e "GRANT ALL ON *.* TO '$DB_USER'@'localhost'; FLUSH PRIVILEGES;"
+
+msg_ok "Configured MariaDB"
 
 mkdir /var/www/script
 curl -fsSL \
@@ -123,7 +130,7 @@ export DB_USER=minthcm
 export DB_PASS=minthcm
 export MINT_URL=localhost
 export MINT_USER=admin
-export MINT_PASS=minthcm
+export MINT_PASS=$DB_PASS
 export ELASTICSEARCH_HOST=localhost
 
   php /var/www/script/generate_config.php
