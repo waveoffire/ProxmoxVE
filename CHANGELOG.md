@@ -10,13 +10,55 @@
 > [!CAUTION]
 Exercise vigilance regarding copycat or coat-tailing sites that seek to exploit the project's popularity for potentially malicious purposes.
 
+## 2025-12-16
+
+### 🚀 Updated Scripts
+
+  - #### 🐞 Bug Fixes
+
+    - 2fauth: bump to php8.4 [@MickLesk](https://github.com/MickLesk) ([#10019](https://github.com/community-scripts/ProxmoxVE/pull/10019))
+
 ## 2025-12-15
+
+### 🆕 New Scripts
+
+  - Koel ([#9972](https://github.com/community-scripts/ProxmoxVE/pull/9972))
+
+### 🚀 Updated Scripts
+
+  - #### 🐞 Bug Fixes
+
+    - Fix DiscoPanel build [@PouletteMC](https://github.com/PouletteMC) ([#10009](https://github.com/community-scripts/ProxmoxVE/pull/10009))
+    - fix:ct/openwebui.sh adding progressbar and minimize service downtime [@jobben-2025](https://github.com/jobben-2025) ([#9894](https://github.com/community-scripts/ProxmoxVE/pull/9894))
+    - homarr: add: temp note aboute deb13 requirement [@CrazyWolf13](https://github.com/CrazyWolf13) ([#9992](https://github.com/community-scripts/ProxmoxVE/pull/9992))
+    - paperless-ai: backup data and recreate venv during update [@MickLesk](https://github.com/MickLesk) ([#9987](https://github.com/community-scripts/ProxmoxVE/pull/9987))
+    - fix(booklore): add setup_yq to update script [@MickLesk](https://github.com/MickLesk) ([#9989](https://github.com/community-scripts/ProxmoxVE/pull/9989))
+    - fix(pangolin-install): add network-online dependency [@worried-networking](https://github.com/worried-networking) ([#9984](https://github.com/community-scripts/ProxmoxVE/pull/9984))
+
+  - #### ✨ New Features
+
+    - OPNsense: dynamic crawl latest stable FreeBSD [@austindsmith](https://github.com/austindsmith) ([#9831](https://github.com/community-scripts/ProxmoxVE/pull/9831))
+
+  - #### 🔧 Refactor
+
+    - Refactor: Heimdall Dashboard [@tremor021](https://github.com/tremor021) ([#9959](https://github.com/community-scripts/ProxmoxVE/pull/9959))
 
 ### 💾 Core
 
   - #### 🐞 Bug Fixes
 
+    - tools: prevent awk errors in setup_rust on restricted containers [@MickLesk](https://github.com/MickLesk) ([#9985](https://github.com/community-scripts/ProxmoxVE/pull/9985))
+    - core: App Defaults force mode and prevent unbound variables [@MickLesk](https://github.com/MickLesk) ([#9971](https://github.com/community-scripts/ProxmoxVE/pull/9971))
     - core: load app defaults before applying base_settings / fix composer cleanup after install/update [@MickLesk](https://github.com/MickLesk) ([#9965](https://github.com/community-scripts/ProxmoxVE/pull/9965))
+
+  - #### ✨ New Features
+
+    - tools: handle flat repositories in setup_deb822_repo [@MickLesk](https://github.com/MickLesk) ([#9994](https://github.com/community-scripts/ProxmoxVE/pull/9994))
+
+### 📚 Documentation
+
+  - (github) remove old files and assets [@MickLesk](https://github.com/MickLesk) ([#9991](https://github.com/community-scripts/ProxmoxVE/pull/9991))
+- README; add project statistics / formatting [@MickLesk](https://github.com/MickLesk) ([#9967](https://github.com/community-scripts/ProxmoxVE/pull/9967))
 
 ## 2025-12-14
 
