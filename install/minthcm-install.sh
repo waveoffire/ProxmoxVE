@@ -107,7 +107,7 @@ msg_ok "Setup Elasticsearch"
 
 
 setup_mariadb
-MARIADB_DB_NAME="minthcm" MARIADB_DB_USER="minthcm" MARIADB_DB_PASS="minthcm" MARIADB_DB_SQL_MODE="" setup_mariadb_db
+MARIADB_DB_USER="minthcm" MARIADB_DB_PASS="minthcm" MARIADB_DB_SQL_MODE="" setup_mariadb_db
 
 mkdir /var/www/script
 curl -fsSL \
