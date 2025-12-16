@@ -134,7 +134,8 @@ export MINT_PASS=$DB_PASS
 export ELASTICSEARCH_HOST=localhost
 
   php /var/www/script/generate_config.php
-
+  chown -R www-data:www-data /var/www/MintHCM
+  chmod -R 755 /var/www/MintHCM
 if [[ ! -f /var/www/MintHCM/configMint4 ]]; then
     msg_error "Error: Failed to generate configMint4 - please check the configuration\n"
     exit 1
