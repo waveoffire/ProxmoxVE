@@ -88,8 +88,7 @@ msg_info "Restarting Apache2 with new configuration"
 $STD systemctl restart apache2
 msg_ok "Apache2 restarted"
 
-read -r -p "${TAB3}Do you want MariaDB and Elasticsearch to be installed automatically in this LXC container? <Y/n> " prompt
-if [[ -z "$prompt" || ${prompt,,} =~ ^(y|yes)$ ]]; then
+
 msg_info "Setting up Elasticsearch"
 setup_deb822_repo \
   "elasticsearch" \
@@ -141,8 +140,8 @@ if [[ ! -f /var/www/MintHCM/configMint4 ]]; then
     exit 1
   fi
 msg_info "Starting MintHCM installation...\n"
-  su -s /bin/bash -c 'php /var/www/MintHCM/MintCLI install < /var/www/MintHCM/configMint4' www-data
-
+  #su -s /bin/bash -c 'php /var/www/MintHCM/MintCLI install < /var/www/MintHCM/configMint4' www-data
+echo ""
   if [[ $? -ne 0 ]]; then
     msg_error "Error: MintHCM installation failed - please check logs\n"
   else
@@ -153,7 +152,6 @@ msg_info "Starting MintHCM installation...\n"
     rm /var/www/MintHCM/configMint4
   fi
 
-fi
 
 
 
