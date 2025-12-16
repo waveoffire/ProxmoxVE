@@ -126,21 +126,25 @@ export DB_HOST=localhost
 export DB_NAME=minthcm
 export DB_PORT=3306
 export DB_USER=minthcm
-export DB_PASS=minthcm
+export DB_PASS=$DB_PASS
 export MINT_URL=localhost
 export MINT_USER=admin
-export MINT_PASS=$DB_PASS
+export MINT_PASS=minthcm
 export ELASTICSEARCH_HOST=localhost
 
+{
+  echo "MintHCM DB Credentials"
+  echo "MariaDB Root Password: $DB_PASS"
+} >>~/minthcm.creds
+
   php /var/www/script/generate_config.php
-  chown -R www-data:www-data /var/www/MintHCM
-  chmod -R 755 /var/www/MintHCM
+
 if [[ ! -f /var/www/MintHCM/configMint4 ]]; then
     msg_error "Error: Failed to generate configMint4 - please check the configuration\n"
     exit 1
   fi
 msg_info "Starting MintHCM installation...\n"
-  #su -s /bin/bash -c 'php /var/www/MintHCM/MintCLI install < /var/www/MintHCM/configMint4' www-data
+  cd /var/www/MintHCM && su -s /bin/bash -c 'php /var/www/MintHCM/MintCLI install < /var/www/MintHCM/configMint4' www-data
 echo ""
   if [[ $? -ne 0 ]]; then
     msg_error "Error: MintHCM installation failed - please check logs\n"
