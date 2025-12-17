@@ -30,54 +30,7 @@ function update_script() {
     msg_error "No ${APP} installation found in ${INSTALL_DIR}!"
     exit
   fi
-
-  msg_info "Stopping Apache2 service"
-  systemctl stop apache2 >/dev/null 2>&1 || true
-  msg_ok "Stopped Apache2 (if running)"
-
-  cd "${INSTALL_DIR}" || {
-    msg_error "Cannot enter ${INSTALL_DIR}"
-    exit 1
-  }
-
-  CURRENT_COMMIT="$(git rev-parse --short HEAD 2>/dev/null || echo 'unknown')"
-  msg_info "Current ${APP} commit: ${CURRENT_COMMIT}"
-
-  msg_info "Fetching latest code from origin/master"
-  sudo -u www-data git fetch origin >/dev/null 2>&1 || {
-    msg_error "git fetch origin failed"
-    exit 1
-  }
-
-  NEW_REMOTE_COMMIT="$(git rev-parse --short origin/master 2>/dev/null || echo 'unknown')"
-
-  if [[ "${CURRENT_COMMIT}" == "${NEW_REMOTE_COMMIT}" ]]; then
-    msg_ok "No update required. ${APP} is already at ${CURRENT_COMMIT}"
-    systemctl start apache2 >/dev/null 2>&1 || true
-    exit
-  fi
-
-  msg_info "Updating ${APP} to origin/master (${NEW_REMOTE_COMMIT})"
-  sudo -u www-data git reset --hard origin/master >/dev/null 2>&1 || {
-    msg_error "git reset --hard origin/master failed"
-    exit 1
-  }
-
-  echo "${NEW_REMOTE_COMMIT}" >/opt/${APP}_version.txt
-
-  msg_info "Adjusting permissions for MintHCM directory"
-  chown -R www-data:www-data "${INSTALL_DIR}"
-  find "${INSTALL_DIR}" -type d -exec chmod 755 {} \;
-  find "${INSTALL_DIR}" -type f -exec chmod 644 {} \;
-  msg_ok "Permissions updated"
-
-  msg_info "Starting Apache2 service"
-  systemctl start apache2 >/dev/null 2>&1 || {
-    msg_error "Failed to start Apache2"
-    exit 1
-  }
-  msg_ok "Started Apache2"
-  msg_ok "Updated ${APP} successfully to commit ${NEW_REMOTE_COMMIT}"
+  msg_error "Currently we don't provide an update function for this ${APP}."
   exit
 }
 
