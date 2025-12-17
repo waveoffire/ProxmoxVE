@@ -118,7 +118,7 @@ msg_ok "Elasticsearch setup completed"
 # MariaDB 
 msg_info "Setting up MariaDB"
 setup_mariadb || msg_error "Failed to setup MariaDB"
-$STD mariadb -u root -e "SET GLOBAL sql_mode='';
+$STD mariadb -u root -e "SET GLOBAL sql_mode=''";
 msg_ok "MariaDB setup completed"
 
 msg_info "Configuring database for MintHCM"
